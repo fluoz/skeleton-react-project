@@ -1,7 +1,11 @@
-type Props = {};
+import { Button } from "@/components/ui/button";
 
-const Home = (props: Props) => {
-  return <div className="bg-red-800">home</div>;
+const Home = () => {
+  return (
+    <div>
+      <Button>test</Button>
+    </div>
+  );
 };
 
 export default Home;
