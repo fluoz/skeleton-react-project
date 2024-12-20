@@ -1,4 +1,4 @@
-import cookiesStorage from "@/lib/cookieStorage";
+import cookiesStorage from "@/lib/utils/cookieStorage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
