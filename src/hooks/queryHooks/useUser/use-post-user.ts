@@ -1,5 +1,4 @@
 import { useAuth } from "@/hooks/storeHooks/use-auth-store";
-import ApiClient from "@/lib/api/apiClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import toast from "react-hot-toast";
@@ -21,16 +20,10 @@ export const usePostUser = () => {
   const { token } = useAuth();
 
   const { mutate: createUser, isPending: isCreating } = useMutation({
-    mutationFn: async (payload: DataProps) => {
-      //   return ApiClient.post("POST_USER_URL", payload, {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
-      return new Promise<AxiosResponse<Response>>((resolve) =>
+    mutationFn: async (payload: DataProps) =>
+      new Promise<AxiosResponse<Response>>((resolve) =>
         setTimeout(() => resolve({} as AxiosResponse<Response>), 1000)
-      );
-    },
+      ),
     onSuccess: (data: AxiosResponse<Response>, dataProps) => {
       // if you want to invalidate a specific query
       queryClient.invalidateQueries({
