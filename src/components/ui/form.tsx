@@ -10,8 +10,8 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-import { cn } from "@/lib/utils/utils";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils/utils";
 
 const Form = FormProvider;
 
@@ -88,12 +88,12 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField();
+  const { formItemId } = useFormField();
 
   return (
     <Label
       ref={ref}
-      className={cn(error && "text-destructive", className)}
+      className={cn(className)}
       htmlFor={formItemId}
       {...props}
     />
@@ -134,7 +134,7 @@ const FormDescription = React.forwardRef<
     <p
       ref={ref}
       id={formDescriptionId}
-      className={cn("text-[0.8rem] text-muted-foreground", className)}
+      className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
   );
@@ -148,18 +148,18 @@ const FormMessage = React.forwardRef<
   const { error, formMessageId } = useFormField();
   const body = error ? String(error?.message) : children;
 
-  if (!body) {
-    return null;
-  }
-
   return (
     <p
       ref={ref}
       id={formMessageId}
-      className={cn("text-[0.8rem] font-medium text-destructive", className)}
+      className={cn(
+        "text-xs font-medium text-destructive custom-transition",
+        error ? "opacity-100" : "opacity-0",
+        className
+      )}
       {...props}
     >
-      {body}
+      {body || <p className="opacity-0">a</p>}
     </p>
   );
 });
