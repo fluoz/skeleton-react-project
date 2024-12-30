@@ -1,3 +1,8 @@
-export interface UserRole {}
+export enum UserRole {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
 
-export interface TokenData {}
+export interface TokenData {
+  role: UserRole;
+}
