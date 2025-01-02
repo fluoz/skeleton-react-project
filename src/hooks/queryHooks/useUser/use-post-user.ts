@@ -13,6 +13,7 @@ interface Response {} // optional
 
 interface DataProps extends Payload {
   onSuccess?: (res: Response) => void;
+  onError?: () => void;
 }
 
 export const usePostUser = () => {
@@ -24,19 +25,35 @@ export const usePostUser = () => {
       new Promise<AxiosResponse<Response>>((resolve) =>
         setTimeout(() => resolve({} as AxiosResponse<Response>), 1000)
       ),
-    onSuccess: (data: AxiosResponse<Response>, dataProps) => {
-      // if you want to invalidate a specific query
-      queryClient.invalidateQueries({
-        queryKey: ["users"],
-      });
+    onMutate: (data: DataProps) => {
+      const previousUsers = queryClient.getQueryData(["users"]);
 
-      // if you want to set the query data without fetching it
-      //   queryClient.setQueryData(["user", data.data.id], data.data);
+      // if you want to update the cache quickly without waiting for the server
+      // queryClient.setQueryData(["users"], (old: any) => {
+      //   return [...old, data];
+      // });
+
+      return { previousUsers };
+    },
+    onSuccess: (data: AxiosResponse<Response>, dataProps) => {
       dataProps.onSuccess?.(data.data);
     },
     // use param error or dataProps for creating error handling
-    onError: () => {
+    onError: (_, dataProps, context) => {
       toast.error("User creation failed");
+
+      // rollback the cache if the mutation fails
+      // if (context?.previousUsers) {
+      //   queryClient.setQueryData(["users"], context.previousUsers);
+      // }
+
+      dataProps.onError?.();
+    },
+    onSettled: () => {
+      // syncronously update the cache
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
     },
   });
 
