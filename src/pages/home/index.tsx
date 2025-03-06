@@ -11,7 +11,7 @@ import { RenderIf } from "@/components/utils/render-if";
 import EachUtils from "@/components/utils/each-utils";
 
 const Home = () => {
-  const { users, usersIsLoading, createUser, isCreating } = useUser({});
+  const { users, usersIsLoading, createUser, isCreating } = useUser();
 
   const form = useForm<UserSchemaType>({
     resolver: zodResolver(UserSchema),

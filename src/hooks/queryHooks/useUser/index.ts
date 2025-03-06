@@ -17,7 +17,7 @@ type UseUserProps = {
   userId?: string;
 };
 
-export const useUser = ({ userId, withFetchAll = true }: UseUserProps) => {
+export const useUser = ({ userId, withFetchAll = true }: UseUserProps = {}) => {
   const { data: users, isLoading: usersIsLoading } = useQuery<User[]>({
     queryKey: ["users"],
     enabled: withFetchAll,
